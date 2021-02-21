@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import FileLoader from "./FileLoader";
+import { setSelecter } from "./selector";
+import "./App.css"
+class App extends Component {
+  state = {
+    data: []
+  };
+
+  fileUploadHandler = (filedata) => {
+    let resultcars = [...filedata];
+    ;
+    
+
+    this.setState({ data: resultcars });
+  };
+
+  selectFileData = () => {
+    const cars = this.state.data;
+
+    //  formData.append('list', data.startlist);
+    console.log(cars);
+    let url = "http://localhost:5000/feed/post";
+    let method = "POST";
+  
+
+    fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cars),
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  render() {
+    console.log(this.state);
+    return (
+      <div>
+        <FileLoader uploadHanler={this.fileUploadHandler} />
+        <button className="fileButton" onClick={this.selectFileData}>UPLOOOOAADDDDCHANGGER</button>
+      </div>
+    );
+  }
 }
 
 export default App;
